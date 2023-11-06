@@ -20,22 +20,22 @@ const MultipleAnswers = ({ newsResults, answer, entities }) => {
     ld.forEach(answer.answer, (keyPoint) => {
       const tokens = keyPoint.replaceAll("-", "").split(" ");
       const annotatedTokens = [];
-      ld.forEach(tokens, (token) => {
+      ld.forEach(tokens, (token, idx) => {
         if (entities.entities[token]) {
           annotatedTokens.push(
-            <>
+            <React.Fragment key={`${token}-${idx}`}>
               {" "}
               <span className="underline decoration-2 underline-offset-2">
                 {token}
               </span>{" "}
-            </>
+            </React.Fragment>
           );
         } else {
           annotatedTokens.push(
-            <>
+            <React.Fragment key={`${token}-${idx}`}>
               {" "}
               <span>{token}</span>{" "}
-            </>
+            </React.Fragment>
           );
         }
       });

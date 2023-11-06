@@ -160,7 +160,7 @@ export default function Home() {
           A <span className="font-bold">balanced</span> perspective on current
           events
         </h1>
-        <hr className="mt-3 w-4/6 mx-auto border-y-1 border-2 border-dotted" />
+        <hr className="mt-3 w-4/6 mx-auto border-y-1 border-1 border-dashed" />
         <p className="text-lg mt-5 w-8/12 justify-center mx-auto">
           InsightWire is a search engine that uses AI to find insights in News.
           It analyses and synthesises articles from a variety of sources and

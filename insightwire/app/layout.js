@@ -1,4 +1,4 @@
-import { PT_Sans, Inter } from "next/font/google";
+import { PT_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Header from "@/components/Header";
 

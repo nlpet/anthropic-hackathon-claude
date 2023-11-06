@@ -26,7 +26,8 @@ const Article = ({ article, title }) => {
         </CardTitle>
 
         <CardDescription>
-          Published {article.age} by {article.meta_url.netloc}
+          Published {article.age} by{" "}
+          <span className="font-semibold">{article.meta_url.netloc}</span>
         </CardDescription>
         <hr />
       </CardHeader>

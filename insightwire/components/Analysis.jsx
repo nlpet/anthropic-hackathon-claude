@@ -31,7 +31,7 @@ const Analysis = ({ opinions }) => {
 
           <CardContent>
             <CardTitle className="">Answer</CardTitle>
-            <p className="bg-slate-200 dark:bg-slate-800 rounded-lg p-3 mt-3">
+            <p className="bg-slate-200 dark:bg-slate-800 rounded-lg p-3 mt-3 w-fit">
               {opinions.answer}
             </p>
 
