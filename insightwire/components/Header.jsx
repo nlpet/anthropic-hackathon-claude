@@ -36,8 +36,10 @@ const Header = () => {
           <div className="flex items-center">
             <Link href="/" className="ml-4 lg:ml-0">
               <h1 className="text-2xl font-bold flex">
-                <span className="text-3xl font-base align-middle">Insight</span>
-                <span className="text-3xl font-thin">Wire</span>
+                <span className="text-3xl font-medium align-middle">
+                  Insight
+                </span>
+                <span className="text-3xl font-extralight">Wire</span>
                 <Lightbulb className="mr-2 h-8 w-8" />
               </h1>
             </Link>

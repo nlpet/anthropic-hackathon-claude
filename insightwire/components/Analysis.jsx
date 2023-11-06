@@ -36,7 +36,7 @@ const Analysis = ({ opinions }) => {
             </p>
 
             <div className="mt-5">
-              <CardTitle>Reasoning</CardTitle>
+              <CardTitle>Reasoning Steps</CardTitle>
 
               <ul className="list-disc ml-5 mt-2">
                 {opinions.reasoning.map((step) => (
