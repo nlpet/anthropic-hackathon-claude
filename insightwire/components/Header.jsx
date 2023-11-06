@@ -4,13 +4,29 @@ import React from "react";
 import Container from "./ui/container";
 import Link from "next/link";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+import { Label } from "@/components/ui/label";
+
 import { useTheme } from "next-themes";
 import { Button } from "./ui/button";
-import { MoonStar, Sun, Lightbulb, User2 } from "lucide-react";
+import { MoonStar, Sun, Lightbulb, Settings2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Switch } from "@/components/ui/switch";
+import ld from "lodash";
+
+import preferencesStore from "@/stores/preferences";
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
+  const { preferences, setPreference } = preferencesStore();
 
   return (
     <header className="py-3 px-4 border-b ">
@@ -38,6 +54,35 @@ const Header = () => {
               <MoonStar className="absolute h-8 w-8 rotate-90 scale-0 transition-all dark:-rotate-0 dark:scale-100" />
               <span className="sr-only">Toggle Theme</span>
             </Button>
+            <Dialog>
+              <DialogTrigger>
+                <Settings2 className="h-8 w-8 mr-3" />
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>View Preferences</DialogTitle>
+                  <DialogDescription>
+                    Set your permanent view preferences for the search results
+                  </DialogDescription>
+                </DialogHeader>
+                <div>
+                  {ld.keys(preferences).map((name) => (
+                    <div
+                      key={name}
+                      className="flex items-center space-x-2 mt-3"
+                    >
+                      <Switch
+                        checked={preferences[name].checked}
+                        onCheckedChange={() => setPreference(name)}
+                      />
+                      <Label htmlFor="airplane-mode">
+                        {preferences[name].title}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+              </DialogContent>
+            </Dialog>
             <Avatar className="h-12 w-12">
               <AvatarImage
                 src="https://ui.shadcn.com/avatars/01.png"

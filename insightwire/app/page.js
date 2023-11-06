@@ -18,6 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { X } from "lucide-react";
 
 import LoaderPlaceholder from "@/components/LoaderPlaceholder";
 import NumericAnswer from "@/components/NumericAnswer";
@@ -25,8 +26,9 @@ import YesNoQuestion from "@/components/YesNoQuestion";
 import MultipleAnswers from "@/components/MultipleAnswers";
 import Entities from "@/components/Entities";
 import Article from "@/components/Article";
-import Opinions from "@/components/Opinions";
-import Experts from "@/components/Experts";
+import Debate from "@/components/Debate";
+import Analysis from "@/components/Analysis";
+import preferencesStore from "@/stores/preferences";
 
 export default function Home() {
   const [query, setQuery] = useState("");
@@ -35,6 +37,7 @@ export default function Home() {
   const [entities, setEntities] = useState(null);
   const [error, setError] = useState(null);
   const [opinions, setOpinions] = useState(null);
+  const [show, setShow] = useState(true);
   const [loading, setLoading] = useState({
     response: false,
     news: false,
@@ -43,6 +46,7 @@ export default function Home() {
   });
   const [open, setOpen] = useState(false);
   const [cachedQueries, setCachedQueries] = useState([]);
+  const { preferences } = preferencesStore();
 
   useEffect(() => {
     const getCachedQueries = async () => {
@@ -63,6 +67,7 @@ export default function Home() {
   }, []);
 
   const search = async (query) => {
+    setShow(true);
     setAnswer(null);
     setError(null);
     setEntities(null);
@@ -85,6 +90,7 @@ export default function Home() {
 
     setLoading({ response: true, news: false, entities: true, opinions: true });
 
+    // TODO: only load what is set in preferences
     const resPromise = fetch("http://localhost:8000/api/search", {
       method: "POST",
       mode: "cors",
@@ -284,8 +290,8 @@ export default function Home() {
         </div>
       )}
 
-      {answer && (
-        <div className="flex w-3/4 mx-auto mt-10">
+      {answer && preferences["answer"].checked && (
+        <>
           {answer.type_of_question === "yes_or_no" && (
             <YesNoQuestion newsResults={newsResults} answer={answer} />
           )}
@@ -295,40 +301,42 @@ export default function Home() {
           {answer.type_of_question === "numeric_answer" && (
             <NumericAnswer newsResults={newsResults} answer={answer} />
           )}
-        </div>
+        </>
       )}
 
-      {entities && !ld.isEmpty(entities.entities) && (
-        <div className="flex w-3/4 mx-auto mt-10">
-          <Entities entities={entities} />
+      {entities &&
+        !ld.isEmpty(entities.entities) &&
+        preferences["entities"].checked && <Entities entities={entities} />}
+
+      {opinions && opinions.takes && preferences["debate"].checked && (
+        <Debate opinions={opinions.takes} />
+      )}
+      {opinions &&
+        opinions.expert_analysis &&
+        preferences["analysis"].checked && (
+          <Analysis opinions={opinions.expert_analysis} />
+        )}
+
+      {newsResults.length > 0 && show && preferences["articles"].checked && (
+        <div className="w-3/4 mx-auto border-2 mt-10 p-5 rounded-lg relative">
+          <X
+            className="absolute top-2 right-2"
+            onClick={() => setShow(false)}
+          />
+          <h2 className="text-lg font-semibold">Relevant News Articles</h2>
+          {newsResults &&
+            ld.map(newsResults.slice(0, 25), (article, idx) => {
+              const title = article.title.split("|")[0].trim().slice(0, 110);
+              return (
+                <Article
+                  key={article.url + idx}
+                  article={article}
+                  title={title}
+                />
+              );
+            })}
         </div>
       )}
-
-      {opinions && opinions.takes && (
-        <div className="flex w-3/4 mx-auto mt-10">
-          <Opinions opinions={opinions.takes} />
-        </div>
-      )}
-
-      {opinions && opinions.expert_analysis && (
-        <div className="flex w-3/4 mx-auto mt-10">
-          <Experts opinions={opinions.expert_analysis} />
-        </div>
-      )}
-
-      <div className="w-3/4 mx-auto">
-        {newsResults &&
-          ld.map(newsResults.slice(0, 25), (article, idx) => {
-            const title = article.title.split("|")[0].trim().slice(0, 110);
-            return (
-              <Article
-                key={article.url + idx}
-                article={article}
-                title={title}
-              />
-            );
-          })}
-      </div>
 
       {answer && answer.type_of_question === "not_a_question" && (
         <div
