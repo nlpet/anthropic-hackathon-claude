@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
 
 import { useTheme } from "next-themes";
 import { Button } from "./ui/button";
@@ -26,7 +27,7 @@ import preferencesStore from "@/stores/preferences";
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
-  const { preferences, setPreference } = preferencesStore();
+  const { preferences, setPreference, setNumTopArticles } = preferencesStore();
 
   return (
     <header className="py-3 px-4 border-b ">
@@ -65,7 +66,8 @@ const Header = () => {
                     Set your permanent view preferences for the search results
                   </DialogDescription>
                 </DialogHeader>
-                <div>
+                <div className="mt-5">
+                  <h2>Toggle view settings</h2>
                   {ld.keys(preferences).map((name) => (
                     <div
                       key={name}
@@ -75,11 +77,21 @@ const Header = () => {
                         checked={preferences[name].checked}
                         onCheckedChange={() => setPreference(name)}
                       />
-                      <Label htmlFor="airplane-mode">
-                        {preferences[name].title}
-                      </Label>
+                      <Label>{preferences[name].title}</Label>
                     </div>
                   ))}
+                  <div className="items-center mt-5">
+                    <Label>
+                      Numer of Top Articles ({preferences["articles"].top})
+                    </Label>
+                    <Slider
+                      className="mt-2"
+                      defaultValue={[preferences.articles.top]}
+                      max={100}
+                      step={1}
+                      onValueChange={(data) => setNumTopArticles(data[0])}
+                    />
+                  </div>
                 </div>
               </DialogContent>
             </Dialog>

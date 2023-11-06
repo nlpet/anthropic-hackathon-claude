@@ -325,16 +325,19 @@ export default function Home() {
           />
           <h2 className="text-lg font-semibold">Relevant News Articles</h2>
           {newsResults &&
-            ld.map(newsResults.slice(0, 25), (article, idx) => {
-              const title = article.title.split("|")[0].trim().slice(0, 110);
-              return (
-                <Article
-                  key={article.url + idx}
-                  article={article}
-                  title={title}
-                />
-              );
-            })}
+            ld.map(
+              newsResults.slice(0, preferences.articles.top),
+              (article, idx) => {
+                const title = article.title.split("|")[0].trim().slice(0, 110);
+                return (
+                  <Article
+                    key={article.url + idx}
+                    article={article}
+                    title={title}
+                  />
+                );
+              }
+            )}
         </div>
       )}
 
