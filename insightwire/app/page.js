@@ -125,10 +125,24 @@ export default function Home() {
     }
 
     try {
+      const res = await resPromise;
+      const data = await res.json();
+      setLoading({
+        response: false,
+        news: false,
+        entities: false,
+        opinions: true,
+      });
+      setAnswer(data);
+    } catch (err) {
+      setError("Could not obtain News synthesis at this time.");
+    }
+
+    try {
       const opinionsRes = await opinionsPromise;
       const opinionsData = await opinionsRes.json();
       setLoading({
-        response: true,
+        response: false,
         news: false,
         entities: false,
         opinions: false,
@@ -136,20 +150,6 @@ export default function Home() {
       setOpinions(opinionsData);
     } catch (err) {
       setError("News results are not available at this time.");
-    }
-
-    try {
-      const res = await resPromise;
-      const data = await res.json();
-      setLoading({
-        response: false,
-        news: false,
-        entities: false,
-        opinions: false,
-      });
-      setAnswer(data);
-    } catch (err) {
-      setError("Could not obtain News synthesis at this time.");
     }
   };
 
@@ -259,7 +259,7 @@ export default function Home() {
       </div>
       {error && (
         <div
-          className="bg-red-100/50 border-2 border-red-200 text-red-700 dark:bg-red-500 dark:border-red-400 dark:text-white px-4 py-3 rounded relative w-3/4 mx-auto mt-5"
+          className="bg-red-100/75 text-red-800 dark:bg-red-500 dark:text-white px-4 py-3 rounded relative w-3/4 mx-auto mt-5"
           role="alert"
         >
           <strong className="font-bold mr-2">Service Unavailable:</strong>
