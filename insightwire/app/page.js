@@ -320,7 +320,7 @@ export default function Home() {
       {newsResults.length > 0 && show && preferences["articles"].checked && (
         <div className="w-3/4 mx-auto border-2 mt-10 p-5 rounded-lg relative">
           <X
-            className="absolute top-2 right-2"
+            className="absolute top-2 right-2 w-5 h-5 text-gray-500"
             onClick={() => setShow(false)}
           />
           <h2 className="text-lg font-semibold">Relevant News Articles</h2>

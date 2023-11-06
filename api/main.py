@@ -68,7 +68,7 @@ async def ask_claude(prompt):
     logger.info("Asking Claude..")
     completion = await anthropic.completions.create(
         model="claude-2",
-        max_tokens_to_sample=500,
+        max_tokens_to_sample=1000,
         prompt=prompt,
     )
     return completion.completion
@@ -230,7 +230,7 @@ def prepare_response(pred, results):
         num_considered = sum(answer.values())
         response = {
             "type_of_question": "yes_or_no",
-            "answer": {k: round(v / num_considered, 2) for k, v in answer.items()},
+            "answer": {k: round(v / num_considered, 4) for k, v in answer.items()},
             "summary": summary,
             "num_considered": num_considered,
         }
@@ -307,7 +307,7 @@ async def opinions(query: Query):
 
     takes = {"debate": debate, "conclusion": conclusion}
     expert_analysis = json.loads(
-        re.search(r"<answer>(.+)</answer>", experts.replace("\n", "")).group(1)
+        re.search(r"<answer>([(\s\S]*?)</answer>", experts.replace("\n", "")).group(1)
     )
 
     response = {"takes": takes, "expert_analysis": expert_analysis}

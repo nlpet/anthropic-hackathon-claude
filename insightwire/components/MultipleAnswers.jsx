@@ -18,7 +18,7 @@ const MultipleAnswers = ({ newsResults, answer }) => {
       <div className="flex w-3/4 mx-auto mt-10 relative">
         <Card className="w-full">
           <X
-            className="absolute top-2 right-2"
+            className="absolute top-2 right-2 w-5 h-5 text-gray-500"
             onClick={() => setShow(false)}
           />
           <div>

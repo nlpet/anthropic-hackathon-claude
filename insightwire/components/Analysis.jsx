@@ -14,7 +14,10 @@ const Analysis = ({ opinions }) => {
   if (show) {
     return (
       <div className="flex w-3/4 mx-auto mt-10 relative">
-        <X className="absolute top-2 right-2" onClick={() => setShow(false)} />
+        <X
+          className="absolute top-2 right-2 w-5 h-5 text-gray-500"
+          onClick={() => setShow(false)}
+        />
         <Card className="w-full">
           <CardHeader>
             <CardTitle className="text-lg flex gap-3">
