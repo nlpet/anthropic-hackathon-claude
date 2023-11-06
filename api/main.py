@@ -1,12 +1,9 @@
 import uvicorn
 import logging
-import openai
 import json
 import asyncio
 import httpx
-import tiktoken
 import re
-
 
 from collections import Counter
 from transformers import pipeline
@@ -30,20 +27,13 @@ from prompts import (
 )
 
 config = dotenv_values()
-openai.api_key = config["OPENAI_API_KEY"]
-enc = tiktoken.encoding_for_model("gpt-4")
-
-anthropic = AsyncAnthropic(
-    api_key=config["CLAUDE_API_KEY"],
-)
-
+anthropic = AsyncAnthropic(api_key=config["CLAUDE_API_KEY"], max_retries=5, timeout=60)
 app = FastAPI()
-
-origins = ["*"]
+app.allowed_claude_connections = 2
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -72,37 +62,6 @@ async def ask_claude(prompt):
         prompt=prompt,
     )
     return completion.completion
-
-
-async def ask_async(client, prompt):
-    logger.info("Asking GPT for its take..")
-    url = "https://api.openai.com/v1/chat/completions"
-    messages = [
-        {
-            "role": "system",
-            "content": (
-                "You are an excellent journalist who upholds best "
-                "ethical journalistic practices and writes in an "
-                "engaging way capturing narratives in the News."
-            ),
-        },
-        {"role": "user", "content": prompt},
-    ]
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {config['OPENAI_API_KEY']}",
-    }
-
-    num_tokens = len(enc.encode(prompt))
-    if num_tokens <= 3800:
-        model = "gpt-3.5-turbo"
-    else:
-        model = "gpt-3.5-turbo-16k"
-
-    data = {"model": model, "messages": messages, "temperature": 0}
-    resp = await client.post(url, headers=headers, json=data, timeout=60)
-    logger.info(resp.text)
-    return resp.json()["choices"][0]["message"]["content"]
 
 
 async def news_snippets_for_query(client, query, offset=0):
@@ -287,6 +246,10 @@ async def opinions(query: Query):
         ai_prompt=AI_PROMPT,
     )
 
+    while app.allowed_claude_connections < 2:
+        await asyncio.sleep(5)
+
+    app.allowed_claude_connections -= 2
     futures = [
         ask_claude(opinions_prompt),
         ask_claude(experts_prompt),
@@ -294,6 +257,7 @@ async def opinions(query: Query):
     async with asyncio.timeout(60):
         results = await asyncio.gather(*futures)
 
+    app.allowed_claude_connections += 2
     takes, experts = results
     logger.info(f"Takes {takes}")
     logger.info(f"Experts {experts}")
@@ -473,6 +437,11 @@ async def search(query: Query):
 
     pred = classifty_query(query)
     prompt = route_to_relevant_prompt(pred, query, context)
+
+    while app.allowed_claude_connections < 2:
+        await asyncio.sleep(5)
+    app.allowed_claude_connections -= 2
+
     futures = [
         ask_claude(prompt),
         ask_claude(summary_prompt),
@@ -480,6 +449,7 @@ async def search(query: Query):
     async with asyncio.timeout(60):
         results = await asyncio.gather(*futures)
 
+    app.allowed_claude_connections += 2
     response = prepare_response(pred, results)
 
     store[query]["response"] = response

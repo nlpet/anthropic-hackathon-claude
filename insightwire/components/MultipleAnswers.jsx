@@ -18,7 +18,7 @@ const MultipleAnswers = ({ newsResults, answer, entities }) => {
   if (!ld.isEmpty(entities)) {
     keyPoints = [];
     ld.forEach(answer.answer, (keyPoint) => {
-      const tokens = keyPoint.replaceAll("-", "").split(" ");
+      const tokens = keyPoint.replaceAll(/\d+\.|-/gi, "").split(" ");
       const annotatedTokens = [];
       ld.forEach(tokens, (token, idx) => {
         if (entities.entities[token]) {

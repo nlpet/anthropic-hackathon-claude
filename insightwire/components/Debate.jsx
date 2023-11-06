@@ -48,8 +48,10 @@ const Debate = ({ opinions }) => {
             </div>
             <hr />
             <CardContent className="mt-10">
-              <CardTitle className="text-md mb-3">Conclusion</CardTitle>
-              <p className="text-sm">{opinions.conclusion}</p>
+              <CardTitle className="mb-5 text-lg font-semibold">
+                Conclusion
+              </CardTitle>
+              <p className="text-md">{opinions.conclusion}</p>
             </CardContent>
           </div>
         </Card>

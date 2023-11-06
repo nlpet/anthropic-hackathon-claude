@@ -86,9 +86,14 @@ export default function Home() {
       setNewsResults(newsData);
     } catch (err) {
       setError("News results are not available at this time.");
+    } finally {
+      setLoading({
+        response: true,
+        news: false,
+        entities: true,
+        opinions: true,
+      });
     }
-
-    setLoading({ response: true, news: false, entities: true, opinions: true });
 
     // TODO: only load what is set in preferences
     const resPromise = fetch("http://localhost:8000/api/search", {
@@ -113,43 +118,46 @@ export default function Home() {
     try {
       const entRes = await entResPromise;
       const entData = await entRes.json();
+      setEntities(entData);
+    } catch (err) {
+      setError("News results are not available at this time.");
+    } finally {
       setLoading({
         response: true,
         news: false,
         entities: false,
         opinions: true,
       });
-      setEntities(entData);
-    } catch (err) {
-      setError("News results are not available at this time.");
     }
 
     try {
       const res = await resPromise;
       const data = await res.json();
+      setAnswer(data);
+    } catch (err) {
+      setError("Could not obtain News synthesis at this time.");
+    } finally {
       setLoading({
         response: false,
         news: false,
         entities: false,
         opinions: true,
       });
-      setAnswer(data);
-    } catch (err) {
-      setError("Could not obtain News synthesis at this time.");
     }
 
     try {
       const opinionsRes = await opinionsPromise;
       const opinionsData = await opinionsRes.json();
+      setOpinions(opinionsData);
+    } catch (err) {
+      setError("News results are not available at this time.");
+    } finally {
       setLoading({
         response: false,
         news: false,
         entities: false,
         opinions: false,
       });
-      setOpinions(opinionsData);
-    } catch (err) {
-      setError("News results are not available at this time.");
     }
   };
 
@@ -198,7 +206,7 @@ export default function Home() {
             <PopoverContent className="p-0 sm:w-[400px] md:w-[850px]">
               <Command>
                 <CommandInput placeholder="Search Query..." className="h-9" />
-                <CommandGroup className="">
+                <CommandGroup className="h-96 overflow-scroll">
                   {cachedQueries.map((q, i) => (
                     <CommandItem
                       key={`${q.value}-${i}`}
