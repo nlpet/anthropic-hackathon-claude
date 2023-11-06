@@ -9,9 +9,40 @@ import {
 } from "@/components/ui/card";
 
 import { List, X } from "lucide-react";
+import ld from "lodash";
 
-const MultipleAnswers = ({ newsResults, answer }) => {
+const MultipleAnswers = ({ newsResults, answer, entities }) => {
   const [show, setShow] = useState(true);
+  let keyPoints = answer.answer;
+
+  if (!ld.isEmpty(entities)) {
+    keyPoints = [];
+    ld.forEach(answer.answer, (keyPoint) => {
+      const tokens = keyPoint.replaceAll("-", "").split(" ");
+      const annotatedTokens = [];
+      ld.forEach(tokens, (token) => {
+        if (entities.entities[token]) {
+          annotatedTokens.push(
+            <>
+              {" "}
+              <span className="underline decoration-2 underline-offset-2">
+                {token}
+              </span>{" "}
+            </>
+          );
+        } else {
+          annotatedTokens.push(
+            <>
+              {" "}
+              <span>{token}</span>{" "}
+            </>
+          );
+        }
+      });
+
+      keyPoints.push(annotatedTokens);
+    });
+  }
 
   if (show) {
     return (
@@ -31,9 +62,9 @@ const MultipleAnswers = ({ newsResults, answer }) => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="ml-5 mr-3">
+              <div className="ml-5">
                 <ul className="list-disc">
-                  {answer.answer.map((claim, idx) => (
+                  {keyPoints.map((claim, idx) => (
                     <li key={`${claim}-${idx}`}>{claim}</li>
                   ))}
                 </ul>

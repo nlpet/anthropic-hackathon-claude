@@ -296,7 +296,11 @@ export default function Home() {
             <YesNoQuestion newsResults={newsResults} answer={answer} />
           )}
           {answer.type_of_question === "multiple_answers" && (
-            <MultipleAnswers newsResults={newsResults} answer={answer} />
+            <MultipleAnswers
+              newsResults={newsResults}
+              answer={answer}
+              entities={entities}
+            />
           )}
           {answer.type_of_question === "numeric_answer" && (
             <NumericAnswer newsResults={newsResults} answer={answer} />

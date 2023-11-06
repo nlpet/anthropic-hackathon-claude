@@ -24,7 +24,7 @@ const Debate = ({ opinions }) => {
             <div className="w-full">
               <CardHeader>
                 <CardTitle className="text-lg flex gap-3">
-                  AI Debate <MessagesSquare />
+                  Debate <MessagesSquare />
                 </CardTitle>
                 <CardDescription>
                   Two AIs with different perspectives discuss the issue.
@@ -37,8 +37,8 @@ const Debate = ({ opinions }) => {
                     key={`${point.side}-${idx}`}
                     className={
                       point.side === "skeptic"
-                        ? `float-left w-4/5 bg-slate-100 rounded-lg p-3 mb-5`
-                        : `float-right w-4/5 bg-rose-50 rounded-lg p-3 mb-5`
+                        ? `float-left w-4/5 bg-slate-100 dark:bg-slate-300 dark:text-slate-900 rounded-lg p-5 mb-5`
+                        : `float-right w-4/5 bg-rose-50 dark:bg-rose-300 dark:text-rose-900 rounded-lg p-5 mb-5`
                     }
                   >
                     {point.text}
@@ -48,7 +48,7 @@ const Debate = ({ opinions }) => {
             </div>
             <hr />
             <CardContent className="mt-10">
-              <CardTitle className="text-md mb-3">AI Conclusion</CardTitle>
+              <CardTitle className="text-md mb-3">Conclusion</CardTitle>
               <p className="text-sm">{opinions.conclusion}</p>
             </CardContent>
           </div>

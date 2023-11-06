@@ -2,7 +2,13 @@
 
 import React, { useState } from "react";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ListStart, ThumbsDown, ThumbsUp, X } from "lucide-react";
 import {
   Table,
@@ -33,12 +39,12 @@ const Entities = ({ entities }) => {
                 <CardTitle className="text-lg flex gap-3">
                   Top Entities <ListStart />
                 </CardTitle>
+                <CardDescription>
+                  Most prominent entities in relevant articles.
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <Table>
-                  <TableCaption className="text-xs">
-                    Entities found in the articles.
-                  </TableCaption>
                   <TableHeader>
                     <TableRow>
                       <TableHead>Entity</TableHead>
@@ -63,12 +69,12 @@ const Entities = ({ entities }) => {
                 <CardTitle className="text-lg flex gap-3">
                   Sentiment <ThumbsUp /> <ThumbsDown />
                 </CardTitle>
+                <CardDescription>
+                  Target based sentiment associated with found entities.
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <Table>
-                  <TableCaption className="text-xs">
-                    Targeted sentiment for each entity found in the articles.
-                  </TableCaption>
                   <TableHeader>
                     <TableRow>
                       <TableHead>Entity</TableHead>
@@ -102,7 +108,7 @@ const Entities = ({ entities }) => {
                       };
                       const sentColor = `text-${
                         sentColors[sentiment.label]
-                      }-600`;
+                      }-500`;
 
                       return (
                         <TableRow key={entity}>

@@ -31,14 +31,14 @@ const Analysis = ({ opinions }) => {
 
           <CardContent>
             <CardTitle className="">Answer</CardTitle>
-            <p className="bg-slate-200 rounded-lg p-3 mt-3">
+            <p className="bg-slate-200 dark:bg-slate-800 rounded-lg p-3 mt-3">
               {opinions.answer}
             </p>
 
             <div className="mt-5">
               <CardTitle>Reasoning</CardTitle>
 
-              <ul className="list-disc ml-5 mr-5 mt-2">
+              <ul className="list-disc ml-5 mt-2">
                 {opinions.reasoning.map((step) => (
                   <li key={step}>{step}</li>
                 ))}

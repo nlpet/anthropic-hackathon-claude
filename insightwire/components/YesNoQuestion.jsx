@@ -57,9 +57,9 @@ const YesNoQuestion = ({ answer, newsResults }) => {
                     neutral: <Scale />,
                   };
                   const colorStyle = {
-                    yes: "text-green-600",
-                    no: "text-red-600",
-                    neutral: "text-gray-600",
+                    yes: "text-green-500",
+                    no: "text-red-500",
+                    neutral: "text-gray-700 dark:text-gray-400",
                   };
                   return (
                     <div key={k} className="mb-5">
