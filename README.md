@@ -4,6 +4,14 @@ InisightWire is a project that uses AI in order to help us make sense of the New
 
 This was originally a Hackathon project, for more information, please check out this [post](https://devpost.com/software/insightwire).
 
-Stay tuned for updates & new features.
+<details><summary>Light Theme Screenshot</summary>
 
-![InsightWire](insightwire_screenshot.png?raw=true "App Screenshot")
+![InsightWire](light_theme.png?raw=true "App Screenshot")
+
+</details>
+
+<details><summary>Dark Theme Screenshot</summary>
+
+![InsightWire](dark_theme.png?raw=true "App Screenshot")
+
+</details>
