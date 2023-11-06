@@ -297,18 +297,15 @@ async def opinions(query: Query):
     takes, experts = results
     logger.info(f"Takes {takes}")
     logger.info(f"Experts {experts}")
-    takes = {
-        "skeptic": re.search(r"<skeptic>(.+)</skeptic>", takes.replace("\n", "")).group(
-            1
-        ),
-        "optimist": re.search(
-            r"<optimist>(.+)</optimist>", takes.replace("\n", "")
-        ).group(1),
-        "conclusion": re.search(
-            r"<conclusion>(.+)</conclusion>", takes.replace("\n", "")
-        ).group(1),
-    }
+    debate = re.findall(
+        r"<(optimist|skeptic)>([\s\S]*?)</(optimist|skeptic)>", takes.replace("\n", "")
+    )
+    debate = [{"side": t[0], "text": t[1]} for t in debate]
+    conclusion = re.search(
+        r"<conclusion>([\s\S]*?)</conclusion>", takes.replace("\n", "")
+    ).group(1)
 
+    takes = {"debate": debate, "conclusion": conclusion}
     expert_analysis = json.loads(
         re.search(r"<answer>(.+)</answer>", experts.replace("\n", "")).group(1)
     )

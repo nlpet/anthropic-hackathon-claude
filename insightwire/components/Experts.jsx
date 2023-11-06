@@ -12,15 +12,20 @@ const Experts = ({ opinions }) => {
     <Card className="w-full">
       <CardHeader>
         <CardTitle className="text-lg flex gap-3">Analysis</CardTitle>
-        <CardDescription>Deeper dive into the issue.</CardDescription>
+        <CardDescription>
+          Expert AIs discuss the issue and offer their conclusion and reasoning
+          steps.
+        </CardDescription>
       </CardHeader>
 
       <CardContent>
-        <p>{opinions.answer}</p>
+        <CardTitle className="">Answer</CardTitle>
+        <p className="bg-slate-200 rounded-lg p-3 mt-3">{opinions.answer}</p>
 
         <div className="mt-10">
-          <b>Reasoning Steps:</b>
-          <ul>
+          <CardTitle>Reasoning</CardTitle>
+
+          <ul className="list-disc ml-5 mr-5 mt-2">
             {opinions.reasoning.map((step) => (
               <li key={step}>{step}</li>
             ))}

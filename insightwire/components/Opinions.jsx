@@ -9,23 +9,36 @@ import {
 
 const Opinions = ({ opinions }) => {
   return (
-    <Card className="w-full">
-      <div className="grid grid-cols-4 divide-x-2">
-        <div className="col-span-2">
+    <Card>
+      <div className="flex flex-col">
+        <div className="w-full">
           <CardHeader>
-            <CardTitle className="text-lg flex gap-3">Opinion A</CardTitle>
-            <CardDescription>Does this resonate?</CardDescription>
+            <CardTitle className="text-lg flex gap-3">AI Debate</CardTitle>
+            <CardDescription>
+              Two AIs with different perspectives discuss the issue.
+            </CardDescription>
           </CardHeader>
 
-          <CardContent>{opinions.skeptic}</CardContent>
+          <CardContent>
+            {opinions.debate.map((point, idx) => (
+              <div
+                key={`${point.side}-${idx}`}
+                className={
+                  point.side === "skeptic"
+                    ? `float-left w-4/5 bg-slate-100 rounded-lg p-3 mb-5`
+                    : `float-right w-4/5 bg-rose-50 rounded-lg p-3 mb-5`
+                }
+              >
+                {point.text}
+              </div>
+            ))}
+          </CardContent>
         </div>
-        <div className="col-span-2">
-          <CardHeader>
-            <CardTitle className="text-lg flex gap-3">Opinion B</CardTitle>
-            <CardDescription>Or maybe this?</CardDescription>
-          </CardHeader>
-          <CardContent>{opinions.optimist}</CardContent>
-        </div>
+        <hr />
+        <CardContent className="mt-10">
+          <CardTitle className="text-md mb-3">AI Conclusion</CardTitle>
+          <p className="text-sm">{opinions.conclusion}</p>
+        </CardContent>
       </div>
     </Card>
   );

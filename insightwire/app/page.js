@@ -298,7 +298,7 @@ export default function Home() {
         </div>
       )}
 
-      {entities && entities.entities && (
+      {entities && !ld.isEmpty(entities.entities) && (
         <div className="flex w-3/4 mx-auto mt-10">
           <Entities entities={entities} />
         </div>
