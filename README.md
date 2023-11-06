@@ -1,4 +1,4 @@
-# InisghtWire
+# InsightWire: AI News App
 
 InisightWire is a project that uses AI in order to help us make sense of the News. Its aim is to introduce nuance and multiple perspectives, and enable us to entertain multiple points of views when we make up our minds about current events.
 
